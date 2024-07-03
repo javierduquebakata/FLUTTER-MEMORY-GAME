@@ -16,7 +16,9 @@ class _StartGameScreenState extends State<StartGameScreen> {
       appBar: AppBar(
         elevation: 0,
         title: const Text(
-          "Flutter Memory Game",
+          style: TextStyle(
+              fontWeight: FontWeight.w800, fontStyle: FontStyle.italic),
+          "Memory Game",
         ),
         centerTitle: true,
       ),
@@ -30,16 +32,36 @@ class _StartGameScreenState extends State<StartGameScreen> {
             height: 25,
           ),
           ElevatedButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const MyFlipCardGame(),
-                ),
-              );
-            },
-            child: const Text("Start Game"),
+            onPressed: () {},
+            style: ButtonStyle(
+                shape: MaterialStateProperty.all<CircleBorder>(
+              const CircleBorder(eccentricity: 0.0, side: BorderSide.none),
+            )),
+            child: IconButton(
+              iconSize: 80.0,
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const MyFlipCardGame(),
+                  ),
+                );
+              },
+              icon: const Icon(Icons.play_arrow_outlined),
+            ),
           )
+          // ElevatedButton(
+          //   onPressed: () {
+          //     Navigator.push(
+          //       context,
+          //       MaterialPageRoute(
+          //         builder: (context) => const MyFlipCardGame(),
+          //       ),
+          //     );
+          //   },
+          //   child: const Text("Start Game",
+          //       style: TextStyle(fontWeight: FontWeight.w800)),
+          // )
         ],
       ),
     );

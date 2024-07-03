@@ -24,9 +24,56 @@ dev_dependencies:
     sdk: flutter
 
 flutter:
+  fonts:
+    - family: VisbyCF
+      fonts:
+        - asset: assets/fonts/VisbyCF-Heavy.otf
+          weight: 900
+        - asset: assets/fonts/VisbyCF-HeavyOblique.otf
+          weight: 900
+          style: italic
+        - asset: assets/fonts/VisbyCF-ExtraBold.otf
+          weight: 800
+        - asset: assets/fonts/VisbyCF-ExtraBoldOblique.otf
+          weight: 800
+          style: italic
+        - asset: assets/fonts/VisbyCF-Bold.otf
+          weight: 700
+        - asset: assets/fonts/VisbyCF-BoldOblique.otf
+          weight: 700
+          style: italic
+        - asset: assets/fonts/VisbyCF-DemiBold.otf
+          weight: 600
+        - asset: assets/fonts/VisbyCF-DemiBoldOblique.otf
+          weight: 600
+          style: italic
+        - asset: assets/fonts/VisbyCF-Medium.otf
+          weight: 500
+        - asset: assets/fonts/VisbyCF-MediumOblique.otf
+          weight: 500
+          style: italic
+        - asset: assets/fonts/VisbyCF-Regular.otf
+          weight: 400
+        - asset: assets/fonts/VisbyCF-RegularOblique.otf
+          weight: 400
+          style: italic
+        - asset: assets/fonts/VisbyCF-Light.otf
+          weight: 300
+        - asset: assets/fonts/VisbyCF-LightOblique.otf
+          weight: 300
+          style: italic
+        - asset: assets/fonts/VisbyCF-Thin.otf
+          weight: 200
+        - asset: assets/fonts/VisbyCF-ThinOblique.otf
+          weight: 200
+          style: italic
+
+
   uses-material-design: true
   # To add assets to your application, add an assets section, like this:
   assets:
+    - assets/fonts/.
     - assets/images/.
     - assets/brain_animation.json
   #   - images/a_dot_ham.jpeg
+
