@@ -1,5 +1,6 @@
 import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
+import 'package:just_audio/just_audio.dart';
 
 class GameOverScreen extends StatefulWidget {
   final int duration;
@@ -10,6 +11,9 @@ class GameOverScreen extends StatefulWidget {
 }
 
 class _GameOverScreenState extends State<GameOverScreen> {
+
+  late AudioPlayer finishSound;
+
   bool isConfettiPlaying = true;
   final _confettiController = ConfettiController(
     duration: const Duration(seconds: 12),
@@ -18,11 +22,19 @@ class _GameOverScreenState extends State<GameOverScreen> {
   @override
   void initState() {
     super.initState();
+    finishSound = AudioPlayer();
+    Future.delayed(const Duration(seconds: 1)).then((value) async{
+      await finishSound.setAsset("assets/audios/won.wav");
+      await finishSound.setLoopMode(LoopMode.off);
+      await finishSound.setVolume(1.0);
+      finishSound.play();
+    });
     _confettiController.play();
   }
 
   @override
   void dispose() {
+    finishSound.dispose();
     _confettiController.dispose();
     super.dispose();
   }

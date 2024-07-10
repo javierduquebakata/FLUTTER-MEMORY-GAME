@@ -1,11 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_memory_game/views/start_game_screen.dart';
+import 'package:just_audio/just_audio.dart';
+import 'package:provider/provider.dart';
 
-void main() {
-  runApp(const MyApp());
+import 'model/AudioProvider.dart';
+
+
+
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(
+      ChangeNotifierProvider(create: (context)  {
+        AudioProvider prov = AudioProvider();
+
+        prov.audioPlayer.setAsset("assets/audios/Ambient.mp3").then((value) {
+          prov.audioPlayer.setLoopMode(LoopMode.one).then((value){
+            prov.audioPlayer.play();
+          });
+        });
+        return prov;
+      },child: const MyApp()
+    )
+  );
 }
 
-class MyApp extends StatelessWidget {
+
+
+class MyApp extends StatelessWidget{
   const MyApp({super.key});
 
   @override
@@ -17,7 +39,7 @@ class MyApp extends StatelessWidget {
         fontFamily: "VisbyCF",
         primarySwatch: Colors.blue,
       ),
-      home: const StartGameScreen(),
+      home: const StartGameScreen() ,
     );
   }
 }

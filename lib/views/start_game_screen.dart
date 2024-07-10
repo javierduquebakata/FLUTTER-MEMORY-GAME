@@ -1,6 +1,16 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_memory_game/model/AudioProvider.dart';
 import 'package:flutter_memory_game/views/game_screen.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:lottie/lottie.dart';
+import 'package:provider/provider.dart';
+
+import '../main.dart';
+
+
+
 
 class StartGameScreen extends StatefulWidget {
   const StartGameScreen({super.key});
@@ -9,9 +19,25 @@ class StartGameScreen extends StatefulWidget {
   State<StartGameScreen> createState() => _StartGameScreenState();
 }
 
-class _StartGameScreenState extends State<StartGameScreen> {
+class _StartGameScreenState extends State<StartGameScreen>  with WidgetsBindingObserver  {
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+
+  @override
+  void dispose() {
+    context.read<AudioPlayer>().dispose();
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -21,6 +47,19 @@ class _StartGameScreenState extends State<StartGameScreen> {
           "Memory Game",
         ),
         centerTitle: true,
+        actions: [
+          context.watch<AudioProvider>().isPlaying
+            ? IconButton(
+                onPressed: () async {
+                  await context.read<AudioProvider>().pause();
+                }, icon: const Icon( Icons.music_note)
+          )
+            : IconButton(
+                onPressed: () async {
+            await context.read<AudioProvider>().play();
+          }, icon: const Icon( Icons.music_off)
+          )
+        ]
       ),
       body: ListView(
         padding: const EdgeInsets.all(25),
@@ -34,9 +73,10 @@ class _StartGameScreenState extends State<StartGameScreen> {
           ElevatedButton(
             onPressed: () {},
             style: ButtonStyle(
-                shape: MaterialStateProperty.all<CircleBorder>(
-              const CircleBorder(eccentricity: 0.0, side: BorderSide.none),
-            )),
+              shape: MaterialStateProperty.all<CircleBorder>(
+                const CircleBorder(eccentricity: 0.0, side: BorderSide.none),
+              )
+            ),
             child: IconButton(
               iconSize: 80.0,
               onPressed: () {
@@ -65,5 +105,24 @@ class _StartGameScreenState extends State<StartGameScreen> {
         ],
       ),
     );
+
+    return Center(
+        child: Image.asset("assets/images/splashView.jpg")
+    );
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) async {
+    switch(state){
+      case AppLifecycleState.hidden:
+      case AppLifecycleState.detached:
+      case AppLifecycleState.inactive:
+      case AppLifecycleState.paused:
+        await context.read<AudioPlayer>().pause();
+        break;
+      case AppLifecycleState.resumed:
+        await context.read<AudioPlayer>().play();
+        break;
+    }
   }
 }
