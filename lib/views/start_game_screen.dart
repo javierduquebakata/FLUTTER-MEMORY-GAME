@@ -30,7 +30,7 @@ class _StartGameScreenState extends State<StartGameScreen>  with WidgetsBindingO
 
   @override
   void dispose() {
-    context.read<AudioPlayer>().dispose();
+    context.read<AudioProvider>().dispose();
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
@@ -118,10 +118,10 @@ class _StartGameScreenState extends State<StartGameScreen>  with WidgetsBindingO
       case AppLifecycleState.detached:
       case AppLifecycleState.inactive:
       case AppLifecycleState.paused:
-        await context.read<AudioPlayer>().pause();
+        await context.read<AudioProvider>().pause();
         break;
       case AppLifecycleState.resumed:
-        await context.read<AudioPlayer>().play();
+        await context.read<AudioProvider>().play();
         break;
     }
   }

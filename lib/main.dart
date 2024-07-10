@@ -11,7 +11,9 @@ import 'model/AudioProvider.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(
-      ChangeNotifierProvider(create: (context)  {
+    ChangeNotifierProvider(
+      lazy: false,
+      create: (context)  {
         AudioProvider prov = AudioProvider();
 
         prov.audioPlayer.setAsset("assets/audios/Ambient.mp3").then((value) {
