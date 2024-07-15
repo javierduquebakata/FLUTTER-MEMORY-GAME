@@ -1,13 +1,10 @@
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_memory_game/model/AudioProvider.dart';
 import 'package:flutter_memory_game/views/game_screen.dart';
-import 'package:just_audio/just_audio.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
-import '../main.dart';
 
 
 
@@ -106,9 +103,6 @@ class _StartGameScreenState extends State<StartGameScreen>  with WidgetsBindingO
       ),
     );
 
-    return Center(
-        child: Image.asset("assets/images/splashView.jpg")
-    );
   }
 
   @override

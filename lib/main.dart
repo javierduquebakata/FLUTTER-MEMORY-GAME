@@ -6,8 +6,6 @@ import 'package:provider/provider.dart';
 import 'model/AudioProvider.dart';
 
 
-
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(
@@ -33,7 +31,7 @@ class MyApp extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Memory Game',
+      title: 'Memory Game',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         fontFamily: "VisbyCF",
@@ -43,3 +41,5 @@ class MyApp extends StatelessWidget{
     );
   }
 }
+
+
