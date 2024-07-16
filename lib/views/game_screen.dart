@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_memory_game/model/data.dart';
 import 'package:flutter_memory_game/views/game_over_screen.dart';
 import 'package:just_audio/just_audio.dart';
@@ -23,9 +24,9 @@ class _MyFlipCardGameState extends State<MyFlipCardGame> {
   late Timer _timer;
   late Timer _durationTimer;
   late int _left;
-  late List _data;
+  late List<CardData> _data;
   late List<bool> _cardFlips;
-  late List<GlobalKey<FlipCardState>> _cardStateKeys;
+  //late List<GlobalKey<FlipCardState>> _cardStateKeys;
 
   late AudioPlayer successSound;
 
@@ -55,9 +56,9 @@ class _MyFlipCardGameState extends State<MyFlipCardGame> {
   }
 
   void initializeGameData() {
-    _data = createShuffledListFromImageSource();
-    _cardFlips = getInitialItemStateList();
-    _cardStateKeys = createFlipCardStateKeysList();
+    _data = DeckController.shuffle();
+    _cardFlips = DeckController.initialGameState();
+    //_cardStateKeys = createFlipCardStateKeysList();
     _time = 3;
     _left = (_data.length ~/ 2);
     _isFinished = false;
@@ -96,7 +97,7 @@ class _MyFlipCardGameState extends State<MyFlipCardGame> {
   Widget getItem(int index) {
     return Container(
       decoration: BoxDecoration(
-        image: DecorationImage(image: AssetImage(_data[index])),
+        image: DecorationImage(image: AssetImage(_data[index].img)),
         borderRadius: BorderRadius.circular(5),
       ),
     );
@@ -131,9 +132,6 @@ class _MyFlipCardGameState extends State<MyFlipCardGame> {
                       ],
                     ),
                   ),
-                  const SizedBox(
-                    height: 50,
-                  ),
                   GridView.builder(
                     padding: const EdgeInsets.all(8),
                     shrinkWrap: true,
@@ -144,28 +142,28 @@ class _MyFlipCardGameState extends State<MyFlipCardGame> {
                       ),
                     itemBuilder: (context, index) => _start
                         ? FlipCard(
-                            key: _cardStateKeys[index],
+                            key: _data[index].state,
                             onFlip: _wait
                                 ? null
                                 : () {
-                                    if (!_flip) {
+                                    if (!_flip) { // Se gira la primera carta
                                       _flip = true;
                                       _previousIndex = index;
-                                    } else {
+                                    } else { // Se esta girando la segunda
                                       _flip = false;
-                                      if (_previousIndex != index) {
-                                        if (_data[_previousIndex] !=
-                                            _data[index]) {
+                                      if (_previousIndex != index) { // La carta
+                                        if (_data[_previousIndex].id !=
+                                            _data[index].id) {
                                           _wait = true;
 
                                           Future.delayed(
                                               const Duration(
                                                   milliseconds: 1000), () {
-                                            _cardStateKeys[_previousIndex]
+                                            _data[_previousIndex].state
                                                 .currentState!
                                                 .toggleCard();
                                             _previousIndex = index;
-                                            _cardStateKeys[_previousIndex]
+                                            _data[_previousIndex].state
                                                 .currentState!
                                                 .toggleCard();
 
@@ -234,57 +232,58 @@ class _MyFlipCardGameState extends State<MyFlipCardGame> {
                         : getItem(index),
                     itemCount: _data.length,
                   ),
-                  const SizedBox(
-                    height: 150,
-                  ),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      ElevatedButton(
-                        onPressed: () {},
-                        style: ButtonStyle(
-                            shape: MaterialStateProperty.all<CircleBorder>(
-                          const CircleBorder(
-                              eccentricity: 0.0, side: BorderSide.none),
-                        )),
-                        child: IconButton(
-                          iconSize: 50.0,
-                          onPressed: () {
-                            Navigator.popUntil(
-                                context, (route) => route.isFirst);
-                          },
-                          icon: const Icon(Icons.arrow_back),
+
+                  Padding(
+                    padding: const EdgeInsets.only(top:20.0),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ElevatedButton(
+                          onPressed: () {},
+                          style: ButtonStyle(
+                              shape: MaterialStateProperty.all<CircleBorder>(
+                            const CircleBorder(
+                                eccentricity: 0.0, side: BorderSide.none),
+                          )),
+                          child: IconButton(
+                            iconSize: 50.0,
+                            onPressed: () {
+                              Navigator.popUntil(
+                                  context, (route) => route.isFirst);
+                            },
+                            icon: const Icon(Icons.arrow_back),
+                          ),
                         ),
-                      ),
-                      const SizedBox(width: 50),
-                      ElevatedButton(
-                        onPressed: () {},
-                        style: ButtonStyle(
-                            shape: MaterialStateProperty.all<CircleBorder>(
-                          const CircleBorder(
-                              eccentricity: 0.0, side: BorderSide.none),
-                        )),
-                        child: IconButton(
-                          iconSize: 50.0,
-                          onPressed: _wait
-                              ? null
-                              : () {
-                                  _previousIndex = -1;
-                                  _time = 3;
-                                  gameDuration = -3;
-                                  _flip = false;
-                                  _start = false;
-                                  _wait = false;
-                                  _timer.cancel();
-                                  _durationTimer.cancel();
-                                  initAll();
-                                  setState(() {});
-                                },
-                          icon: const Icon(Icons.refresh),
+                        const SizedBox(width: 50),
+                        ElevatedButton(
+                          onPressed: () {},
+                          style: ButtonStyle(
+                              shape: MaterialStateProperty.all<CircleBorder>(
+                            const CircleBorder(
+                                eccentricity: 0.0, side: BorderSide.none),
+                          )),
+                          child: IconButton(
+                            iconSize: 50.0,
+                            onPressed: _wait
+                                ? null
+                                : () {
+                                    _previousIndex = -1;
+                                    _time = 3;
+                                    gameDuration = -3;
+                                    _flip = false;
+                                    _start = false;
+                                    _wait = false;
+                                    _timer.cancel();
+                                    _durationTimer.cancel();
+                                    initAll();
+                                    setState(() {});
+                                  },
+                            icon: const Icon(Icons.refresh),
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   )
                 ],
               ),

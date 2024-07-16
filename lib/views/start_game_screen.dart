@@ -5,10 +5,6 @@ import 'package:flutter_memory_game/views/game_screen.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
-
-
-
-
 class StartGameScreen extends StatefulWidget {
   const StartGameScreen({super.key});
 
