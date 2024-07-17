@@ -143,6 +143,7 @@ class _MyFlipCardGameState extends State<MyFlipCardGame> {
                     itemBuilder: (context, index) => _start
                         ? FlipCard(
                             key: _data[index].state,
+                            speed: 350,
                             onFlip: _wait
                                 ? null
                                 : () {
@@ -151,12 +152,12 @@ class _MyFlipCardGameState extends State<MyFlipCardGame> {
                                       _previousIndex = index;
                                     } else { // Se esta girando la segunda
                                       _flip = false;
-                                      if (_previousIndex != index) { // La carta
+                                      if (_previousIndex != index) { // La carta seleccionada es distinta
                                         if (_data[_previousIndex].id !=
-                                            _data[index].id) {
+                                            _data[index].id) { // No hay coincidencia
                                           _wait = true;
 
-                                          Future.delayed(
+                                          Future.delayed( // Para que de tiempo a ver el arte y que el usuario vea que se ha equivocado
                                               const Duration(
                                                   milliseconds: 1000), () {
                                             _data[_previousIndex].state
@@ -167,6 +168,7 @@ class _MyFlipCardGameState extends State<MyFlipCardGame> {
                                                 .currentState!
                                                 .toggleCard();
 
+
                                             Future.delayed(
                                                 const Duration(
                                                     milliseconds: 160), () {
@@ -175,7 +177,7 @@ class _MyFlipCardGameState extends State<MyFlipCardGame> {
                                               });
                                             });
                                           });
-                                        } else {
+                                        } else { //Hay coincidencia
                                           _cardFlips[_previousIndex] = false;
                                           _cardFlips[index] = false;
 
