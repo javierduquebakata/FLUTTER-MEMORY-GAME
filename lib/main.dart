@@ -9,16 +9,6 @@ import 'model/AudioProvider.dart';
 
 void main() async {
 
-  // OpenAI.apiKey = "sk-svcacct-k7l26Bw1l2dDXyyxJbPVT3BlbkFJrjEocm15Ctv27PKetIMf";
-  //
-  // final image = await OpenAI.instance.image.create(
-  //   model: "dall-e-3",
-  //   prompt: "dog",
-  // );
-  // for (int index = 0; index < image.data.length; index++) {
-  //   final currentItem = image.data[index];
-  //   print(currentItem.url);
-  // }
 
   WidgetsFlutterBinding.ensureInitialized();
   runApp(
